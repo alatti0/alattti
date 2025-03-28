@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بطاقة معايدة</title>
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; 
+            text-align: center; 
+            background-color: #f8f9fa; 
+            padding: 20px; 
+        }
+        .card {
+            background: white; 
+            padding: 20px; 
+            border-radius: 50px 10px 50px 10px; /* زوايا غير منتظمة */
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); 
+            max-width: 350px; /* أكثر نحافة */
+            margin: auto;
+            position: relative;
+            border: 1px solid #e0e0e0;
+        }
+        .card-content {
+            position: relative;
+        }
+        input {
+            padding: 12px; 
+            width: 80%; 
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px; /* مدور أكثر */
+            font-size: 16px;
+            text-align: center;
+        }
+        button {
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            border-radius: 25px; /* مدور أكثر */
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .image-container {
+            position: relative;
+            margin: 25px auto;
+            width: 90%;
+        }
+        .image-container img {
+            width: 100%;
+            border-radius: 20px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .name-overlay {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            color: #006400;
+            font-size: 22px;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 30px; /* شكل بيضاوي أنيق */
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            border: 1px solid #e0e0e0;
+            min-width: 150px;
+            text-align: center;
+        }
+        #downloadBtn {
+            background: linear-gradient(135deg, #2196F3, #0D47A1);
+            margin: 20px auto;
+            display: block;
+            width: 80%;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        .greeting-text {
+            color: #006400;
+            font-size: 18px;
+            margin: 15px 0;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .decoration {
+            position: absolute;
+            width: 100%;
+            height: 15px;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A, #4CAF50);
+            border-radius: 50%;
+            bottom: -7px;
+            left: 0;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="decoration"></div>
+        <div class="controls">
+            <h2 style="color: #2E7D32;">🎉 بطاقة معايدة 🎉</h2>
+            <p>أدخل اسمك لإنشاء بطاقة مخصصة:</p>
+            <input type="text" id="nameInput" placeholder="اسمك الكريم">
+            <button onclick="addNameToCard()">إضافة الاسم</button>
+        </div>
+        
+        <div class="card-content" id="cardToDownload">
+            <div class="image-container">
+                <img src="https://i.imgur.com/z9s7diF.jpeg" alt="صورة معايدة">
+                <div class="name-overlay" id="nameDisplay"></div>
+            </div>
+            <p class="greeting-text"></p>
+        </div>
+        
+        <button id="downloadBtn" onclick="downloadCard()">💾 حفظ البطاقة</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function addNameToCard() {
+            const name = document.getElementById("nameInput").value.trim();
+            if (name) {
+                document.getElementById("nameDisplay").textContent = name;
+            } else {
+                alert("الرجاء إدخال اسم أولاً");
+            }
+        }
+
+        function downloadCard() {
+            const name = document.getElementById("nameInput").value.trim();
+            if (!name) {
+                alert("الرجاء إدخال اسم أولاً ثم الضغط على زر إضافة الاسم");
+                return;
+            }
+            
+            const card = document.getElementById("cardToDownload");
+            
+            html2canvas(card, {
+                scale: 2,
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'تهنئة-عيد-' + name + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+
+</body>
+</html>
